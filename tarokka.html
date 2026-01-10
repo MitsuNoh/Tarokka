@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tirage du Tarokka</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #0f0f14;
+      color: #e6e6e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #1b1b24;
+      border: 2px solid #6b5d3a;
+      padding: 40px 60px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #6b5d3a;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #8c7a4f;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 1.6em;
+      font-weight: bold;
+      min-height: 1.6em;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tirage du Tarokka</h1>
+    <button onclick="tirerCarte()">Tirer une carte</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const cartes = [
+      "Le Maître des Ombres","La Mort","Le Sombre Seigneur","La Roue du Destin","L’Étoile","La Lame Brisée",
+      "Le Mage","Le Traître","Le Martyr","La Lune","Le Juste","La Bête","La Tour","L’Enfant",
+      "Le Soldat","Le Mercenaire","Le Duelliste","Le Général","Le Bourreau","La Bataille","Le Déserteur",
+      "La Garde","Le Vengeur","La Défaite",
+      "Le Prêtre","Le Prophète","L’Apprenti","Le Sorcier","Le Fanatique","Le Rituel","La Flamme",
+      "Le Guide","L’Hérétique","L’Ascension",
+      "Le Marchand","Le Voleur","Le Noble","Le Collecteur","Le Mendiant","Le Contrat","La Dette",
+      "Le Trésor","Le Parjure","L’Héritage",
+      "L’Amant","La Veuve","L’Ami","Le Traître (Coupes)","L’Enfant Perdu","Le Masque","La Confession",
+      "La Jalousie","Le Serment","L’Adieu"
+    ];
+
+    function tirerCarte() {
+      const index = Math.floor(Math.random() * cartes.length);
+      document.getElementById("result").textContent = cartes[index];
+    }
+  </script>
+</body>
+</html>
