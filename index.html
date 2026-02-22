@@ -1,69 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tirage du Tarokka</title>
-  <style>
-    body {
-      font-family: Georgia, serif;
-      background: #0f0f14;
-      color: #e6e6e6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .card {
-      background: #1b1b24;
-      border: 2px solid #6b5d3a;
-      padding: 40px 60px;
-      text-align: center;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-    button {
-      background: #6b5d3a;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-size: 1em;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #8c7a4f;
-    }
-    .result {
-      margin-top: 30px;
-      font-size: 1.4em;
-      font-weight: bold;
-      min-height: 1.6em;
-      text-align: left;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Tirage du Tarokka</title>
+
+<style>
+body {
+  font-family: Georgia, serif;
+  background: #0f0f14;
+  color: #e6e6e6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.board {
+  display: grid;
+  grid-template-areas:
+    ". top ."
+    "left center right"
+    ". bottom .";
+  gap: 30px;
+  align-items: center;
+  justify-items: center;
+}
+
+.card {
+  width: 150px;
+  height: 220px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  backface-visibility: hidden;
+  border: 2px solid #6b5d3a;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+.card-back {
+  background: linear-gradient(145deg, #1b1b24, #111);
+}
+
+.card-front {
+  background: #1b1b24;
+  transform: rotateY(180deg);
+  font-weight: bold;
+}
+
+.top { grid-area: top; }
+.left { grid-area: left; }
+.center { grid-area: center; }
+.right { grid-area: right; }
+.bottom { grid-area: bottom; }
+
+h1 {
+  position: absolute;
+  top: 40px;
+  font-size: 1.6em;
+  text-align: center;
+}
+</style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>Devant toi, un paquet de cartes noires avec des dorures...</h1>
-    <button onclick="tirerCartes()">Tirer 5 cartes</button>
-    <div class="result" id="result"></div>
-  </div>
 
-  <script>
-    const cartes = ["L’Artéfact", "Le Pendu", "La Bête", "Le Cavalier", "Le Brisé", "L’Innocent", "Le Seigneur Sombre", "La Marionnette", "Le Donjon", "Les Brumes", "Le Bourreau", "Le Corbeau", "Le Fantôme", "La Tentatrice", "Le Guerrier", "Le Vengeur", "Le Paladin", "Le Soldat", "Le Mercenaire", "Le Myrmidon", "Le Berserker", "L’Homme Capuchonné", "Le Dictateur", "Le Bourreau", "Le Roublard", "Le Bretteur", "Le Philanthrope", "Le Négociant", "Le Marchand", "Le Membre de Guilde", "Le Mendiant", "Le Voleur", "Le Collecteur d’Impôts", "L’Avare", "Le Sorcier", "Le Transmutateur", "Le Devin", "L’Enchanteresse", "L’Abjurateur", "L’Élémentaliste", "L’Invocateur", "L’Illusionniste", "Le Nécromancien", "Le Conjurateur", "Le Prêtre", "Le Moine", "Le Missionnaire", "Le Guérisseur", "La Bergère", "Le Druide", "L’Anarchiste", "Le Charlatan", "L’Évêque", "Le Traître"];
+<h1>Devant toi, cinq cartes noires aux dorures anciennes...</h1>
 
-    function tirerCartes() {
-      let cartesMelangees = [...cartes].sort(() => Math.random() - 0.5);
-      let tirage = cartesMelangees.slice(0, 5);
+<div class="board" id="board"></div>
 
-      document.getElementById("result").innerHTML =
-        tirage.map((c, i) => `${i + 1}. ${c}`).join("<br>");
-    }
-  </script>
+<script>
+
+const cartes = [
+"L’Artéfact","La Bête","L'Homme Brisé","L’Innocente","Le Héros",
+"Le Cavalier","La Marionnette","Les Brumes","La Prison","Le Corbeau",
+"L'Esprit","La Tentatrice","La Vengeresse","Le Paladin","Le Soldat",
+"Le Mercenaire","Le Myrmidon","Le Berserker","L'Encapuchonné",
+"Le Dictateur","Le Bourreau","Le Maître des Épées","L'Alchimiste",
+"L'Oracle","L'Enchanteresse","La Protectrice","L'Élémentaliste",
+"La Sorcière","L'Illusionniste","Le Nécromancien","L'Invocatrice",
+"Le Maître des Étoiles","L'Aventurier","Le Philanthrope","Le Négociant",
+"Le Marchand","L'Artisan","Le Mendiant","Le Voleur","Le Percepteur",
+"L'Avare","Le Maître des Pièces","Le Moine","Le Missionnaire",
+"Le Guérisseur","Le Berger","Le Druide","L'Anarchiste",
+"Le Charlatan","L'Évêque","Le Traître","Le Maître des Glyphes"
+];
+
+const positions = ["top","left","center","right","bottom"];
+
+function melanger(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+function creerCarte(nom, position) {
+  const card = document.createElement("div");
+  card.className = `card ${position}`;
+  
+  card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-face card-back"></div>
+      <div class="card-face card-front">${nom}</div>
+    </div>
+  `;
+
+  card.addEventListener("click", () => {
+    card.classList.toggle("flipped");
+  });
+
+  return card;
+}
+
+function initTirage() {
+  const board = document.getElementById("board");
+  const tirage = melanger(cartes).slice(0, 5);
+
+  tirage.forEach((nom, index) => {
+    const carte = creerCarte(nom, positions[index]);
+    board.appendChild(carte);
+  });
+}
+
+initTirage();
+
+</script>
+
 </body>
 </html>
